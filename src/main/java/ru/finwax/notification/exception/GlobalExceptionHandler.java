@@ -33,4 +33,5 @@ public class GlobalExceptionHandler {
         log.error("Internal server error: {}", e.getMessage(), e);
         return ResponseEntity.internalServerError().body("Internal server error");
     }
+
 }
