@@ -2,7 +2,8 @@ package ru.finwax.notification.exception;
 
 
 public class DeviceNotFoundException extends RuntimeException {
-    public DeviceNotFoundException(String message) {
-        super(message);
+    public DeviceNotFoundException(String deviceId) {
+        super(deviceId);
     }
+
 }

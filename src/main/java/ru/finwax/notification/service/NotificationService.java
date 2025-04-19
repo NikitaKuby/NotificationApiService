@@ -20,21 +20,14 @@ import ru.finwax.notification.repository.NotificationRepository;
 public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final DeviceRepository deviceRepository;
-
     @Transactional
-    public Notification saveNotification(String deviceId, @Valid Notification notification) {
+    public void saveNotification(String deviceId, @Valid Notification notification) {
         Device device = deviceRepository.findByDeviceId(deviceId)
-            .orElseThrow(() -> {
-                log.error("Attempt to save notification for non-existent device: {}", deviceId);
-                return new DeviceNotFoundException("Device not found: " + deviceId);
-            });
+            .orElseThrow(() -> new DeviceNotFoundException("Device not found: " + deviceId));
 
         notification.setDevice(device);
-
         notificationRepository.save(notification);
-        deviceRepository.save(device);
 
-        log.info("Saved notification for device {}: {}", deviceId, notification);
-        return notification;
+        log.info("Notification saved for device {}", deviceId);
     }
 }

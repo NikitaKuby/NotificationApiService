@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.finwax.notification.exception.DeviceNotFoundException;
 import ru.finwax.notification.model.Device;
 import ru.finwax.notification.repository.DeviceRepository;
 
@@ -15,10 +16,8 @@ public class DeviceService {
 
     @Transactional
     public Device registerDevice(String deviceId) {
-        if (deviceRepository.existsByDeviceId(deviceId)) {
-            log.warn("Device with id {} already exists", deviceId);
-            throw new IllegalArgumentException("Device already exists");
-        }
+        deviceRepository.findByDeviceId(deviceId)
+            .orElseThrow(() -> new DeviceNotFoundException(deviceId));
 
         Device device = new Device();
         device.setDeviceId(deviceId);
@@ -29,11 +28,4 @@ public class DeviceService {
         return savedDevice;
     }
 
-    public Device getDeviceByDeviceId(String deviceId) {
-        return deviceRepository.findByDeviceId(deviceId)
-            .orElseThrow(() -> {
-                log.error("Device with id {} not found", deviceId);
-                return new IllegalArgumentException("Device not found");
-            });
-    }
 }
