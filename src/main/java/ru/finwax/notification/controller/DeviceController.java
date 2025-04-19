@@ -1,9 +1,10 @@
 package ru.finwax.notification.controller;
 
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.finwax.notification.model.Device;
+import ru.finwax.notification.model.dto.DeviceRegistrationRequest;
 import ru.finwax.notification.service.DeviceService;
 
 @RestController
@@ -16,8 +17,8 @@ public class DeviceController {
     }
 
     @PostMapping
-    public ResponseEntity<Device> registerDevice(@RequestParam String deviceId) {
-        Device device = deviceService.registerDevice(deviceId);
+    public ResponseEntity<Device> registerDevice(@Valid @RequestBody DeviceRegistrationRequest deviceId) {
+        Device device = deviceService.registerDevice(deviceId.deviceId());
         return ResponseEntity.ok(device);
     }
 }

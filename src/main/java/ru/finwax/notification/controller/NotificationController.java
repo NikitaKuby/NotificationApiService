@@ -25,8 +25,7 @@ public class NotificationController {
         @PathVariable String deviceId,
         @RequestBody @Valid Notification notification) {
         try {
-            Notification savedNotification = notificationService.saveNotification(deviceId, notification);
-            return ResponseEntity.ok(savedNotification);
+            return ResponseEntity.ok( notificationService.saveNotification(deviceId, notification));
         } catch (DeviceNotFoundException e) {
             log.error("Device not found error: {}", e.getMessage());
             return ResponseEntity.badRequest().build();

@@ -21,13 +21,4 @@ public class Device {
     @Column(name = "notification_count", nullable = false)
     private int notificationCount = 0;
 
-    @OneToMany(mappedBy = "device", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private List<Notification> notifications = new ArrayList<>();
-
-    public void addNotification(Notification notification) {
-        notifications.add(notification);
-        notification.setDevice(this);
-        notificationCount++;
-    }
 }

@@ -2,6 +2,7 @@ package ru.finwax.notification.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,13 +17,15 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@EnableScheduling
 public class SchedulerService {
     private final NotificationRepository notificationRepository;
     private final ProcessedNotificationRepository processedNotificationRepository;
 
-    @Scheduled(fixedRate = 5 * 60 * 1000)
+    @Scheduled(fixedRate = 20 * 1000)
     @Transactional
     public void processUnprocessedNotifications() {
+        log.info("Scheduler started at {}", LocalDateTime.now());
         List<Notification> unprocessedNotifications = notificationRepository.findByIsProcessedFalse();
 
         if (unprocessedNotifications.isEmpty()) {

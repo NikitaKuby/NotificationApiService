@@ -30,12 +30,11 @@ public class NotificationService {
             });
 
         notification.setDevice(device);
-        device.addNotification(notification);
 
-        Notification savedNotification = notificationRepository.save(notification);
+        notificationRepository.save(notification);
         deviceRepository.save(device);
 
         log.info("Saved notification for device {}: {}", deviceId, notification);
-        return savedNotification;
+        return notification;
     }
 }
